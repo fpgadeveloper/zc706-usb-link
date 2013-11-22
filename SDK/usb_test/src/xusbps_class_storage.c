@@ -64,7 +64,7 @@
 #include "xusbps_class_storage.h"
 #include "xil_printf.h"
 
-/* #define CLASS_STORAGE_DEBUG */
+#define CLASS_STORAGE_DEBUG
 
 #ifdef CLASS_STORAGE_DEBUG
 #define printf xil_printf
