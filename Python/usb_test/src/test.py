@@ -28,6 +28,7 @@ if __name__ == '__main__':
     print('dev.bNumConfigurations: ',dev.bNumConfigurations)
     print('dev.bDeviceClass: ',dev.bDeviceClass)
     
+    
     # set the active configuration. With no arguments, the first
     # configuration will be the active one
     dev.set_configuration()
@@ -40,8 +41,9 @@ if __name__ == '__main__':
         cfg, bInterfaceNumber = interface_number,
         bAlternateSetting = alternate_setting
     )
-    
-    ep = usb.util.find_descriptor(
+
+    # find the OUT endpoint    
+    eptx = usb.util.find_descriptor(
         intf,
         # match the first OUT endpoint
         custom_match = \
@@ -50,11 +52,38 @@ if __name__ == '__main__':
             usb.util.ENDPOINT_OUT
     )
     
-    assert ep is not None
+    # find the IN endpoint    
+    eprx = usb.util.find_descriptor(
+        intf,
+        # match the first OUT endpoint
+        custom_match = \
+        lambda e: \
+            usb.util.endpoint_direction(e.bEndpointAddress) == \
+            usb.util.ENDPOINT_IN
+    )
     
+    assert eptx is not None
+    assert eprx is not None
+    """
+    print('ep.bDescriptorType: ',ep.bDescriptorType)
+    print('ep.bEndpointAddress: ',ep.bEndpointAddress)
+    print('ep.bInterval: ',ep.bInterval)
+    print('ep.bLength: ',ep.bLength)
+    print('ep.bRefresh: ',ep.bRefresh)
+    print('ep.bSynchAddress: ',ep.bSynchAddress)
+    print('ep.bmAttributes: ',ep.bmAttributes)
+    print('ep.device: ',ep.device)
+    print('ep.index: ',ep.index)
+    print('ep.interface: ',ep.interface)
+    print('ep.wMaxPacketSize: ',ep.wMaxPacketSize)
+    """
     # write the data
-    #ep.write('test')
-    dev.write(1,'jeff',0)
+    #ep.write('jest')
+    
+    eptx.write([x % 256 for x in range(513)])
+    #buf = dev.read(1,10)
+    buf = eprx.read(eprx.wMaxPacketSize)
+    print(buf)
     
     
     
