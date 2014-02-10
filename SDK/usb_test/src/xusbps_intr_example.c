@@ -416,7 +416,7 @@ static void XUsbPs_Ep0EventHandler(void *CallBackRef, u8 EpNum,
 	u32	BufferLen;
 	u32	Handle;
 
-
+	xil_printf("EP0 event\n\r");
 	Xil_AssertVoid(NULL != CallBackRef);
 
 	InstancePtr = (XUsbPs *) CallBackRef;
@@ -481,6 +481,7 @@ static void XUsbPs_Ep1EventHandler(void *CallBackRef, u8 EpNum,
 	u32	BufferLen;
 	u32	Handle;
 
+	xil_printf("EP1 OUT event: %X\n\r",EventType);
 
 	Xil_AssertVoid(NULL != CallBackRef);
 
